@@ -26,7 +26,7 @@ public class Sax extends DefaultHandler {
             ParserConfigurationException, SAXException, IOException {
         SAXParserFactory factory = SAXParserFactory.newInstance();
         SAXParser parser = factory.newSAXParser();
-        Manejador parserSax = new Manejador();
+        Manejador_17 parserSax = new Manejador_17();
         parser.parse(entradaXML, parserSax);
     }
     public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
