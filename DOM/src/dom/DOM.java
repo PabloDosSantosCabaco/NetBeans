@@ -6,6 +6,8 @@
 package dom;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -15,6 +17,10 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
+import org.w3c.dom.bootstrap.DOMImplementationRegistry;
+import org.w3c.dom.ls.DOMImplementationLS;
+import org.w3c.dom.ls.LSOutput;
+import org.w3c.dom.ls.LSSerializer;
 
 /**
  *
@@ -22,19 +28,44 @@ import org.w3c.dom.Text;
  */
 public class DOM {
 
-    public static void main(String[] args) {
+    
+    
+    public void grabarDOM(Document document, String ficheroSalida) throws
+            ClassNotFoundException, InstantiationException, IllegalAccessException, FileNotFoundException {
+        DOMImplementationRegistry registry = DOMImplementationRegistry.newInstance();
+        DOMImplementationLS ls = (DOMImplementationLS) registry.getDOMImplementation("XML 3.0 LS 3.0");
+// Se crea un destino vacio
+        LSOutput output = ls.createLSOutput();
+        output.setEncoding("UTF-8");
+// Se establece el flujo de salida
+        output.setByteStream(new FileOutputStream(ficheroSalida));
+//output.setByteStream(System.out);
+// Permite escribir un documento DOM en XML
+        LSSerializer serializer = ls.createLSSerializer();
+// Se establecen las propiedades del serializador
+        serializer.setNewLine("\r\n");;
+        serializer.getDomConfig().setParameter("format-pretty-print", true);
+// Se escribe el documento ya sea en un fichero o en una cadena de texto
+        serializer.write(document, output);
+// String xmlCad=serializer.writeToString(document);
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, FileNotFoundException {
         DOM ej = new DOM();
+        String ruta = System.getProperty("USERPROFILE")+"/Desktop/grabar";
         String docPath = System.getenv("USERPROFILE") + "/Desktop/pliclas.xml";
         Document doc = ej.createTree(docPath);
         //ej.showMoviesWithDirectors(doc, 1);
         //System.out.println(ej.getDifferentGenres(doc));
         //Scanner sc = new Scanner(System.in);
         //sc.nextLine();
-        ej.addDirector(doc, "Dune", "Perico", "El de los palotes");
-        ej.showMovies(doc);
+        //ej.addDirector(doc, "Dune", "Perico", "El de los palotes");
+        //ej.showMovies(doc);
 //		ej.addMovie(doc, new String[] {"año","genero","idioma"},
 //				new String[] {"1987","Acción","v.o."},"Depredador", 
 //				new String[] {"John"}, new String[] {"Tiernan"});
+        ej.createNewDocument(doc);
+        //ej.grabarDOM(doc, ruta);
     }
     //Ejercicio 13
     //*****************************************************

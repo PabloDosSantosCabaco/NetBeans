@@ -179,13 +179,6 @@ public class Ejercicios {
 
 //	EJERCICIO 9
 //	******************************************************
-//	public static void main (String[] args) {
-//		Ejercicios e = new Ejercicios();
-//		Scanner sc = new Scanner(System.in);
-//		String ruta1 = "c:\\Users\\Pablo\\Desktop\\ruta\\alumno.txt";
-//		File f = new File(ruta1);
-//		e.altaAlumno(f,"A1",02,11101997);
-//	}
     public void altaAlumno(File alumno,String nombre,int codigo, int fecha) {
             try(DataOutputStream out = new DataOutputStream(new FileOutputStream(alumno,true))) {
                     out.writeUTF(nombre);
@@ -264,18 +257,6 @@ public class Ejercicios {
 //	
 //	EJERCICIO 8
 //	******************************************************
-//	public static void main (String[] args) {
-//		Ejercicios e = new Ejercicios();
-//		String ruta1 = "c:\\Users\\Pablo\\Desktop\\ruta\\B.txt";
-//		File f = new File(ruta1);
-//		byte[] buffer = new byte[5];
-//		e.clonarArchivoBinario(f, f.getAbsolutePath().replace(f.getName(), f.getName().replace(".txt", "_copia.txt")),buffer);
-//	
-//		int[] sizes= {10,20,30,40,1000};
-//		for (int i:sizes) {
-//			e.clonarArchivoBinario(f, f.getAbsolutePath().replace(f.getName(), f.getName().replace(".txt", "_copia.txt")),new byte[i]);	
-//		}
-//}
     public void clonarArchivoBinario(File f,String destino) {
             int i;
             try(FileInputStream fileIn = new FileInputStream(f)){
@@ -303,20 +284,6 @@ public class Ejercicios {
 //	
 //	EJERCICIO 7
 //	******************************************************
-//	public static void main (String[] args) throws IOException {
-//		Ejercicios e = new Ejercicios();
-//		String ruta1 = "c:\\Users\\Pablo\\Desktop\\ruta\\Ejercicio.txt";
-//		File f = new File(ruta1);
-//		System.out.printf("El archivo tiene %s lineas%n",e.cuentaPalabras(f,true));
-//		System.out.printf("El archivo tiene %s palabras",e.cuentaPalabras(f,false));
-//		e.archivoOrdLin(f,true,true);
-//		e.archivoOrdLin(f,false,true);
-//		e.archivoOrdLin(f,false,false);
-//		e.archivoOrdLin(f,true,false);
-//	}
-//	//Crea un fichero ordenado por orden ascendente o descendente de lineas segun el booleano
-//	//y a partir del fichero pasado como parámetro
-//	
     public void archivoOrdLin(File f, boolean des, boolean sensible) {
             //Collections.sort(array,String.CASE_INSENSITIVE_ORDER);
             String fileName;
@@ -328,19 +295,19 @@ public class Ejercicios {
             File newF = new File(nuevoArchivo);
             ArrayList<String> aLineas = new ArrayList<String>();
             try(Scanner sc = new Scanner(f)){
-                    while(sc.hasNext()) {
-                            aLineas.add(sc.nextLine());
-                    }
-                    if(sensible) Collections.sort(aLineas,String.CASE_INSENSITIVE_ORDER);	
-                    else Collections.sort(aLineas);
-                    if(des) Collections.reverse(aLineas);
-                    try(PrintWriter fichOut = new PrintWriter(newF)){
-                            for(int i=0; i<aLineas.size(); i++) {
+                while(sc.hasNext()) {
+                    aLineas.add(sc.nextLine());
+                }
+                if(sensible) Collections.sort(aLineas,String.CASE_INSENSITIVE_ORDER);	
+                else Collections.sort(aLineas);
+                if(des) Collections.reverse(aLineas);
+                try(PrintWriter fichOut = new PrintWriter(newF)){
+                    for(int i=0; i<aLineas.size(); i++) {
 //					if(des) 
-                                            fichOut.println(aLineas.get(i));
+                        fichOut.println(aLineas.get(i));
 //					else fichOut.printf(aLineas.get(aLineas.size()-i-1)+"%n");
-                            }	
-                    }
+                    }	
+                }
             }catch(FileNotFoundException ex) {
                     System.err.println("Archivo deseado no encontrado.");
             }
@@ -371,33 +338,24 @@ public class Ejercicios {
 
 //	EJERCICIO 6
 //	******************************************************
-//	public static void main (String[] args) throws IOException {
-//		Ejercicios e = new Ejercicios();
-//		String rutaArchivo = "C:\\Users\\Pablo\\Desktop\\ruta\\Ejercicio.txt";
-//		String rutaArchivo2 = "C:\\Users\\Pablo\\Desktop\\ruta\\A.txt";
-//		String rutaArchivo3 = "C:\\Users\\Pablo\\Desktop\\ruta\\B.txt";
-//		File f = new File(rutaArchivo), f2 = new File(rutaArchivo2), f3 = new File(rutaArchivo3);
-//		e.unificarFicheros(f,f2,f3);
-//		
-//	}
     public void separarPorLineas(File f, int lineas) {
             int contador=0, contadorLineas = 0;
             Scanner sc;
             try {
-                    sc = new Scanner(f);
-                    while(sc.hasNext()) {
-                            if(contadorLineas<lineas) {
-                                    try(PrintWriter fichOut = new PrintWriter((new FileWriter(f.getAbsolutePath().replace(".txt","")+contador+".txt",true)))){						
-                                            fichOut.write(sc.nextLine()+"\n");
-                                            contadorLineas++;
-                                    }catch(IOException er) {
+                sc = new Scanner(f);
+                while(sc.hasNext()) {
+                    if(contadorLineas<lineas) {
+                        try(PrintWriter fichOut = new PrintWriter((new FileWriter(f.getAbsolutePath().replace(".txt","")+contador+".txt",true)))){						
+                            fichOut.write(sc.nextLine()+"\n");
+                            contadorLineas++;
+                        }catch(IOException er) {
 
-                                    }
-                            }else {
-                                    contadorLineas = 0;
-                                    contador++;
-                            }
+                        }
+                    }else {
+                        contadorLineas = 0;
+                        contador++;
                     }
+                }
             }catch(FileNotFoundException e) {
 
             }finally {
@@ -423,79 +381,50 @@ public class Ejercicios {
     public void unificarFicheros(File... ficheros) {
             String rutaUnificado = "C:\\Users\\Pablo\\Desktop\\ruta\\unificado.txt";
             try(PrintWriter fichOut = new PrintWriter(rutaUnificado)){
-                    for (File f:ficheros) {
-                            try(Scanner sc = new Scanner(f)){
-                                    while(sc.hasNext()) {
-                                            fichOut.println(sc.nextLine());
-                                    }
-                            }
+                for (File f:ficheros) {
+                    try(Scanner sc = new Scanner(f)){
+                        while(sc.hasNext()) {
+                            fichOut.println(sc.nextLine());
+                        }
                     }
+                }
             }catch(FileNotFoundException er) {
                     System.err.println("Archivo destino no encontrado.");
             }
     }
-//	
-
 //	EJERCICIO 5
 //	******************************************************
-//	public static void main (String[] args) throws IOException {
-//		Ejercicios ejercicio = new Ejercicios();
-//		Ejercicios e = new Ejercicios();
-//		String ruta = "C:\\Users\\Pablo\\Desktop\\ruta\\Ejercicio.txt";
-//		File f = new File(ruta);
-//		try {
-//			ejercicio.buscaLineas("ejercicio",f);
-//		}catch(FileNotFoundException err) {
-//			System.err.println("Podés dejar de cagarla, boludo?");
-//		}
-//	}
     public void buscaLineas(String cad, File f) throws FileNotFoundException {
-//		Scanner sc = null;
             int cont = 1;
             String frase = "";
             try (Scanner sc=new Scanner(f)){
-//			sc = new Scanner(f);
-                    System.out.printf("Frases con \"%s\"\n",cad);
-                    System.out.println("*********************");
-                    while(sc.hasNext()) {
-                            frase = sc.nextLine();
-                            if(frase.contains(cad)) {
-                                    System.out.printf("%s | %s",cont,frase);
-                                    System.out.println();
-                            }
-                            cont++;
+                System.out.printf("Frases con \"%s\"\n",cad);
+                System.out.println("*********************");
+                while(sc.hasNext()) {
+                    frase = sc.nextLine();
+                    if(frase.contains(cad)) {
+                            System.out.printf("%s | %s",cont,frase);
+                            System.out.println();
                     }
-            } 
-//		finally {
-//			if(sc != null) {
-//				sc.close();
-//			}
-//		}
+                    cont++;
+                }
+            }
     }
 //	EJERCICIO 4
 //	******************************************************
-//	public static void main (String[] args) throws IOException {
-//		Ejercicios e = new Ejercicios();
-//		String ruta = "C:\\Users\\Pablo\\Desktop\\ruta\\B.txt";
-//		File f = new File(ruta);
-//		e.contar(f);
-//	}
     public void contar(File f) throws IOException {
             int cont=0;
 
-            FileReader fichIn=null;
-            try {
-                    fichIn = new FileReader(f);
-                    int i;
-                    while((i = fichIn.read()) != -1) {
-
-                            if(letras.contains(new Caracter((char)i))) {
-                                    letras.get(letras.indexOf(new Caracter((char)i))).aumentar();
-                            }else {
-                                    Caracter caracter = new Caracter((char)i);
-                                    letras.add(caracter);
-                            }
+            try(FileReader fichIn = new FileReader(f)) {
+                int i;
+                while((i = fichIn.read()) != -1) {
+                    if(letras.contains(new Caracter((char)i))) {
+                        letras.get(letras.indexOf(new Caracter((char)i))).aumentar();
+                    }else {
+                            Caracter caracter = new Caracter((char)i);
+                        letras.add(caracter);
                     }
+                }
             } finally {
                     int max = 0;
                     char maxChar = 'g';
@@ -506,9 +435,6 @@ public class Ejercicios {
                             }
                     }
                     System.out.println("El caracter más aparecido es "+maxChar);
-                    if(fichIn != null) {
-                            fichIn.close();
-                    }
             }
     }
 //	EJERCICIO 3
@@ -516,31 +442,18 @@ public class Ejercicios {
     public int contarOcurrencias(File f,char cad) throws IOException{
             int cont=0;
 
-            FileReader fichIn=null;
-            try {
-                    fichIn = new FileReader(f);
-                    int i;
-                    while((i = fichIn.read()) != -1) {
-                            if(((char)i)==cad) {
-                                    cont++;
-                            }
+            try(FileReader fichIn=new FileReader(f)){
+                int i;
+                while((i = fichIn.read()) != -1) {
+                    if(((char)i)==cad) {
+                            cont++;
                     }
-            } finally {
-                    if(fichIn != null) {
-                            fichIn.close();
-                    }
+                }
             }
             return cont;
     }
 //	EJERCICIO 2
 // **************************************************
-//	public static void main (String[] args) {
-//		Ejercicios e2 = new Ejercicios();
-//		String ruta = "C:\\Users\\Pablo\\Desktop\\ruta";
-//		File directorio = new File(ruta);
-//		e2.getListDir(directorio);
-//	}
-
     public void getListDir(File f) {
             File[] contenido = f.listFiles();
 
@@ -557,35 +470,17 @@ public class Ejercicios {
 
 //	EJERCICIO 1
 //************************************************
-//	public static void main(String[] args) {
-//		Ejercicios p1 = new Ejercicios();
-//		File f1 = new File("C:\\Users\\Pablo\\Desktop","ruta");
-//
-//		System.out.println("Directorios");
-//		System.out.println("------------");
-////		p1.getList(f1,true);
-//		System.out.println();
-//		System.out.println("Archivos");
-//		System.out.println("------------");
-//		p1.getList(f1,true);
-//		System.out.println("------------");
-//		
-////		p1.getList2(f1,true);
-//	}
-//	
     public void getList(File ruta, boolean dir) {
-
-            File[] files = ruta.listFiles();
-
-            if(dir) {
-                    for(File f:files) {
-                            if(f.isDirectory()) System.out.println(f.getAbsolutePath());
-                    }
-            }else {
-                    for(File f:files) {
-                            if(f.isFile()) System.out.println(f.getAbsolutePath());
-                    }
+        File[] files = ruta.listFiles();
+        if(dir) {
+            for(File f:files) {
+                if(f.isDirectory()) System.out.println(f.getAbsolutePath());
             }
+        }else {
+            for(File f:files) {
+                if(f.isFile()) System.out.println(f.getAbsolutePath());
+            }
+        }
     }
 //	
 //	public void getList2(File ruta, boolean dir) {
